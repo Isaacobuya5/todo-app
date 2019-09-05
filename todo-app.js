@@ -25,12 +25,16 @@ const todos = [{
 }];
 
 const filters = {
-    searchText: ''
+    searchText: '',
+    hideCompleted: false
 };
 
 const renderTodos = function(notes,filters) {
     const filterdTodos = todos.filter(function(todo) {
-        return todo.text.toUpperCase().includes(filters.searchText.toUpperCase());
+        const searchTextMatch = todo.text.toUpperCase().includes(filters.searchText.toUpperCase());
+        const hideCompletedMatch = !filters.hideCompleted || !todo.completed;
+
+        return searchTextMatch && hideCompletedMatch;
     });
         //Return incoplete tasks
         const incomplete = filterdTodos.filter(function(todo) {
@@ -53,9 +57,10 @@ const renderTodos = function(notes,filters) {
 renderTodos(todos,filters);
 
 
+
 //Listen for todo text
 document.querySelector('#new-todo-text').addEventListener('input', function(e) {
-    console.log(e.target.value);
+    //console.log(e.target.value);
 })
 
 //search for todos
@@ -75,6 +80,13 @@ document.querySelector('#new-todo').addEventListener('submit', function(e) {
     //e.target.elements["new"].value = ''
     e.target.elements.newTodo.value = ''
     
+})
+
+document.querySelector('#hide-completed').addEventListener('change', function(e) {
+    console.log(e.target.checked)
+    filters.hideCompleted = e.target.checked;
+
+    renderTodos(todos,filters);
 })
 
 
