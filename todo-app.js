@@ -36,7 +36,7 @@ const renderTodos = function(notes,filters) {
         const incomplete = filterdTodos.filter(function(todo) {
             return todo.completed === false;
         })
-         document.querySelector('#todos').innerHTML = '';
+        document.querySelector('#todos').innerHTML = '';
 
         const summary = document.createElement('h2');
         summary.textContent = `You have ${incomplete.length} todos left`;
@@ -53,11 +53,6 @@ const renderTodos = function(notes,filters) {
 renderTodos(todos,filters);
 
 
-//Listen for new todo creation
-document.querySelector('#add-todo').addEventListener('click', function(e) {
-    console.log("Add a new todo");
-})
-
 //Listen for todo text
 document.querySelector('#new-todo-text').addEventListener('input', function(e) {
     console.log(e.target.value);
@@ -67,6 +62,19 @@ document.querySelector('#new-todo-text').addEventListener('input', function(e) {
 document.querySelector('#search-text').addEventListener('input', function(e) {
     filters.searchText = e.target.value;
     renderTodos(todos,filters);
+});
+
+//add todo to DOM
+document.querySelector('#new-todo').addEventListener('submit', function(e) {
+    e.preventDefault();
+    todos.push({
+        text : e.target.elements.newTodo.value,
+        completed : false
+    });
+    renderTodos(todos,filters);
+    //e.target.elements["new"].value = ''
+    e.target.elements.newTodo.value = ''
+    
 })
 
 
